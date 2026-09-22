@@ -40,6 +40,8 @@ type Briefing = {
   stock: Stock;
   news: NewsItem[];
   summary: Summary;
+  sentAt?: string;
+  sentTo?: string;
 };
 
 export default function Home() {
@@ -48,7 +50,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/daily-briefing")
+    fetch("/api/latest-briefing")
       .then(async (res) => {
         const data = await res.json();
         if (!res.ok) {
@@ -81,6 +83,8 @@ export default function Home() {
           <div className="flex flex-col gap-6">
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
               {briefing.date}
+              {briefing.sentAt &&
+                ` ・ 寄送於 ${new Date(briefing.sentAt).toLocaleString("zh-TW")}`}
             </p>
 
             <section className="rounded-2xl bg-white p-6 shadow-sm dark:bg-zinc-900">
